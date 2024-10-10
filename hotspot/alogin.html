@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1">
+    <title>Internet hotspot - Redirecionamento</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script>
+        var popup = 'true'; 
+        var linkStatus = '#'; 
+
+        function startClock() {
+            
+            setTimeout(function() {
+                location.href = "https://pluto.tv/"; 
+            }, 5000); 
+        }
+        
+        function openPopup() {
+           
+            if (typeof popup !== 'undefined' && popup === 'true') {
+                
+                window.open(linkStatus, 'plutoTV', 'width=600,height=400');
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: hsl(29, 95%, 48%); 
+        }
+    </style>
+
+</head>
+
+<body onLoad="startClock()">
+    <div class="ie-fixMinHeight">
+        <div class="main">
+            <div class="wrap">
+                <h1>Você está logado!</h1>
+                <p class="info">Se nada acontecer, clique <a href="https://pluto.tv/" target="_blank">aqui</a></p>
+               
+                <style>
+                    .a {
+                        text-decoration: none;
+                        color: white;
+
+                    }
+
+                </style>
+
+                   
+ 
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

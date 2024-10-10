@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Definindo o tempo de refresh, se houver -->
+    $(if refresh-timeout)
+    <meta http-equiv="refresh" content="$(refresh-timeout-secs)">
+    $(endif)
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1">
+    <title>Internet hotspot - Status</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <script>
+        // Se houver publicidade pendente, exibe uma pop-up
+        $(if advert-pending == 'yes')
+        var popup = '';
+
+        function focusAdvert() {
+            if (window.focus) popup.focus();
+        }
+
+        function openAdvert() {
+            popup = window.open('$(link-advert)', 'hotspot_advert', 'toolbar=0,location=0,directories=0,status=0,menubars=0,resizable=1,width=280,height=250');
+            setTimeout(focusAdvert, 1000);
+        }
+        $(endif)
+
+        // Função que desconecta o usuário ao clicar no botão "Desconectar"
+        function openLogout() {
+            // Se o nome da janela não for 'hotspot_status', não faz nada
+            if (window.name !== 'hotspot_status') {
+                return true; // Deixa o comportamento padrão seguir
+            }
+            // Abre a página de logout em uma nova janela
+            window.open('$(link-logout)', 'hotspot_logout', 'toolbar=0,location=0,directories=0,status=0,menubars=0,resizable=1,width=280,height=250');
+            // Fecha a janela atual
+            window.close();
+            return false; // Impede o envio do formulário
+        }
+    </script>
+</head>
+
+<body $(if advert-pending == 'yes') onload="openAdvert()" $(endif)>
+    <div class="ie-fixMinHeight">
+        <div class="main">
+            <div class="wrap">
+                <!-- Mensagem de boas-vindas dependendo do método de login -->
+                $(if login-by == 'trial')
+                    <h1>Olá, usuário de teste!</h1>
+                $(elif login-by != 'mac')
+                    <h1>Olá, $(username)!</h1>
+                $(endif) 
+
+                <!-- Formulário que envia o usuário para desconectar -->
+                <form action="$(link-logout)" name="logout" onsubmit="return openLogout()">
+                    <table>
+                        <!-- Exibindo informações do usuário -->
+                        <tr><td>Endereço IP</td><td>$(ip)</td></tr>
+                        <tr><td>Bytes upload / download</td><td>$(bytes-in-nice) / $(bytes-out-nice)</td></tr>
+                        <!-- Exibindo o tempo de conexão e o tempo restante -->
+                        $(if session-time-left)
+                            <tr><td>Conectado / Tempo restante</td><td>$(uptime) / $(session-time-left)</td></tr>
+                        $(else)
+                            <tr><td>Conectado</td><td>$(uptime)</td></tr>
+                        $(endif)
+
+                        <!-- Exibindo o status do usuário, se necessário -->
+                        $(if blocked == 'yes')
+                            <tr><td>Status</td><td>
+                                <a href="$(link-advert)" target="hotspot_advert">Advertisement required</a></td>
+                            </tr>
+                        $(elif refresh-timeout)
+                            <tr><td>Status refresh</td><td>$(refresh-timeout)</td></tr>
+                        $(endif)
+                    </table>
+
+                    <!-- Exibindo o botão de desconexão -->
+                    $(if login-by-mac != 'yes')
+                        <input type="submit" value="Desconectar">
+                    $(endif)
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
